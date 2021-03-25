@@ -36,6 +36,20 @@ const PRODUCTS = [
   }
 ];
 
+// const PROMO_CODES = [
+//   {
+//     id: 1,
+//     code: "SUMMER",
+//     discountPercent: 20,
+//   },
+//   {
+//     id: 2,
+//     code: "SPRING",
+//     discountPercent: 30,
+//   },
+// ];
+
+
 // Tính tổng số lượng sản phẩm
 // const totalItems = PRODUCTS.reduce(
 //   (total, product) => total + product.quantity,
@@ -46,6 +60,7 @@ const PRODUCTS = [
 // Chú ý khi hiển thị cần làm tròn về 2 số sau dấu thập phân
 function App() {
   const [products, setProducts] = useState(PRODUCTS);
+  // const [inputCode, setInputCode] = useState("");
 
   // const [totalItems, setTotalItems] = useState(PRODUCTS.reduce((total,product) => total  += product.quantity, 0));
 
@@ -53,7 +68,7 @@ function App() {
   0
   );
 
-  let subTotal = products.reduce((total,product)=>(total += product.price),0);
+  let subTotal = products.reduce((total,product)=>(total += (product.price*product.quantity)),0);
 
   let tax = (subTotal * 10)/ 100;
 
@@ -120,9 +135,6 @@ function App() {
             enableBackground="new 0 0 60 60"
             xmlSpace="preserve"
             onClick={() => removeProduct(product.id)}
-            
-            // onClick={handleClick2()}
-            // onClick={() => handleClick3(product)}
           >
             <polygon points="38.936,23.561 36.814,21.439 30.562,27.691 24.311,21.439 22.189,23.561 28.441,29.812 22.189,36.064 24.311,38.186 30.562,31.934 36.814,38.186 38.936,36.064 32.684,29.812" />
           </svg>
@@ -159,12 +171,16 @@ function App() {
       <section className="container">
         <div className="promotion">
           <label htmlFor="promo-code">Have A Promo Code?</label>
-          <input type="text" id="promo-code" /> <button type="button" />
+          <input type="text" 
+          // value={inputCode} 
+          // onChange={(event)=> setInputCode(event.target.value)} 
+          id="promo-code" /> 
+          <button type="button" />
         </div>
         <div className="summary">
           <ul>
             <li>
-              Subtotal <span>${subTotal}</span>
+              Subtotal <span>${subTotal.toFixed(2)}</span>
             </li>
             <li>
               Tax <span>${tax}</span>
