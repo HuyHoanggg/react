@@ -1,86 +1,15 @@
 import { useState } from "react";
-import "./App.css"
+import { PRODUCTS } from "./mockData";
 
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "PRODUCT ITEM NUMBER 1",
-    description: "Description for product item number 1",
-    image: "https://via.placeholder.com/200x150",
-    price: 10,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "PRODUCT ITEM NUMBER 2",
-    description: "Description for product item number 2",
-    image: "https://via.placeholder.com/200x150",
-    price: 20,
-    quantity: 2,
-  },
-  {
-    id: 3,
-    name: "PRODUCT ITEM NUMBER 3",
-    description: "Description for product item number 3",
-    image: "https://via.placeholder.com/200x150",
-    price: 30,
-    quantity: 3,
-  },
-  {
-    id: 4,
-    name: "PRODUCT ITEM NUMBER 3",
-    description: "Description for product item number 3",
-    image: "https://via.placeholder.com/200x150",
-    price: 30,
-    quantity: 4,
-  }
-];
-
-// Tính tổng số lượng sản phẩm
-// const totalItems = PRODUCTS.reduce(
-//   (total, product) => total + product.quantity,
-//   0
-// );
-
-//TODO: Tính giá tiền (subTotal), thuế (tax = 10%), total = subTotal + tax
-// Chú ý khi hiển thị cần làm tròn về 2 số sau dấu thập phân
 function App() {
   const [products, setProducts] = useState(PRODUCTS);
 
-  // const [totalItems, setTotalItems] = useState(PRODUCTS.reduce((total,product) => total  += product.quantity, 0));
-
-  let totalItems = products.reduce((total, product) => (total += product.quantity),
-  0
+  let totalItems = products.reduce(
+    (total, product) => (total += product.quantity),
+    0
   );
 
-  let subTotal = products.reduce((total,product)=>(total += product.price),0);
-
-  let tax = (subTotal * 10)/ 100;
-
-  let total = subTotal + tax;
-
-  function removeProduct(productId) {
-    setProducts (() => products.filter(
-      product => product.id !== productId
-      )
-    ) 
-  }
-
-  function updateQuantity(event, productId) {
-    const inputValue = event.target.value;
-    let newProducts = [...products];
-    let index = newProducts.findIndex((product) => product.id === productId);
-
-    if (index > -1) {
-      newProducts[index].quantity = Number(inputValue);
-    }
-    setProducts(newProducts);
-  }
-
-  // Return theo điều kiện
-  // if (products.length === 0) return <h1>404 not found</h1>
-
-  const productList = products.map((product) => (
+  let productList = products.map((product) => (
     <li className="row" key={product.id}>
       <div className="col left">
         <div className="thumbnail">
@@ -120,9 +49,6 @@ function App() {
             enableBackground="new 0 0 60 60"
             xmlSpace="preserve"
             onClick={() => removeProduct(product.id)}
-            
-            // onClick={handleClick2()}
-            // onClick={() => handleClick3(product)}
           >
             <polygon points="38.936,23.561 36.814,21.439 30.562,27.691 24.311,21.439 22.189,23.561 28.441,29.812 22.189,36.064 24.311,38.186 30.562,31.934 36.814,38.186 38.936,36.064 32.684,29.812" />
           </svg>
@@ -130,6 +56,29 @@ function App() {
       </div>
     </li>
   ));
+  // Gán biến theo điều kiện
+  // if (products.length === 0) productList = <li>404 not found</li>
+
+  function removeProduct(productID) {
+    const removedProducts = products.filter(
+      (product) => product.id !== productID
+    );
+    setProducts(removedProducts);
+  }
+
+  function updateQuantity(event, productId) {
+    const inputValue = event.target.value;
+    let newProducts = [...products];
+    let index = newProducts.findIndex((product) => product.id === productId);
+
+    if (index > -1) {
+      newProducts[index].quantity = Number(inputValue);
+    }
+    setProducts(newProducts);
+  }
+
+  // Return theo điều kiện
+  // if (products.length === 0) return <h1>404 not found</h1>
 
   return (
     <main>
@@ -149,11 +98,11 @@ function App() {
         {products.length <= 0 && <h1>NO PRODUCT</h1>}
 
         {/* Inline If Cách 2 */}
-        {/* {products.length > 0 ? (
+        {products.length > 0 ? (
           <ul className="products">{productList}</ul>
         ) : (
           <h1>NO PRODUCT</h1>
-        )} */}
+        )}
       </section>
 
       <section className="container">
@@ -164,13 +113,13 @@ function App() {
         <div className="summary">
           <ul>
             <li>
-              Subtotal <span>${subTotal}</span>
+              Subtotal <span>$21.97</span>
             </li>
             <li>
-              Tax <span>${tax}</span>
+              Tax <span>$5.00</span>
             </li>
             <li className="total">
-              Total <span>${total}</span>
+              Total <span>$26.97</span>
             </li>
           </ul>
         </div>
